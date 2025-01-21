@@ -1,19 +1,19 @@
-import { readLines } from "https://deno.land/std@0.170.0/io/mod.ts";
 import { getLastCommand } from "./history.ts";
 
-// Show the last command and ask for corrections
-console.log(`Last command: ${await getLastCommand()}`);
-console.log("Enter corrected command (or press Enter to skip):");
+async function main() {
+  console.log(`Last command: ${await getLastCommand()}`);
 
-// Get user input
-const correctedCommand = (await (await readLines(Deno.stdin)).next()).value;
+  const correctedCommand = "echo";
+  const args = ["1", "2"];
 
-// Execute the corrected command
-if (correctedCommand) {
-  const command = new Deno.Command("echo", {
-    args: ["hello world"],
-  });
-  await command.output();
-} else {
-  console.log("Skipped.");
+  if (correctedCommand) {
+    const command = new Deno.Command(correctedCommand, {
+      args,
+    });
+    console.log((await command.output()).stdout);
+  } else {
+    console.log("Skipped.");
+  }
 }
+
+await main();
