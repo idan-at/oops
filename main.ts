@@ -10,7 +10,9 @@ async function main() {
     const command = new Deno.Command(correctedCommand, {
       args,
     });
-    console.log((await command.output()).stdout);
+    const stdout = (await command.output()).stdout;
+    new TextDecoder().decode(stdout);
+    console.log(new TextDecoder().decode(stdout));
   } else {
     console.log("Skipped.");
   }
