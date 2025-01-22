@@ -8,5 +8,5 @@ export async function getLastCommand() {
     .decode(await Deno.readFile(history))
     .split("\n");
 
-  return historyLines[historyLines.length - 3];
+  return historyLines[historyLines.length - 3].split(";")[1];
 }
