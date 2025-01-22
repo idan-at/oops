@@ -1,23 +1,36 @@
 import { getLastCommand } from "./history.ts";
 import { GoogleGenerativeAI } from "npm:@google/generative-ai";
+import { GitNotCommandRule } from "./rules/git_not_command.ts";
+import { Command } from "./command.ts";
 import process from "node:process";
 
 async function main() {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
   const lastCommand = await getLastCommand();
-  console.log(`Last command: "${lastCommand}"`);
+  const [name, ...args2] = lastCommand.split(" ");
+  const c = new Deno.Command(name, {
+    args: args2,
+  });
+  const stderr = (await c.output()).stderr;
+  const command = new Command(lastCommand, new TextDecoder().decode(stderr));
+
+  console.log(`Last command: "${command}"`);
 
   const response = await model.generateContent(
-    `I have a type in this command "${lastCommand}".
+    `I have a type in this command "${command.raw}".
 Can you please provide me with the most similar correct command you know? I want you to output a plain json with two fields:
 "command" for the first part of the command: probably a binary name, and certainly should not contain s apce, and "args" as an array of arguments. Do not include any other text in the response, including any markdown hints. The response should start with "{"`,
   );
   // const correctedCommand = "echo";
   // const args = ["1", "2"];
 
+  console.log(
+    new GitNotCommandRule().matches(command),
+    new GitNotCommandRule().fix(command),
+  );
+  console.log(response.response.text());
   const x = JSON.parse(response.response.text());
   const correctedCommand = x.command;
   const args = x.args;

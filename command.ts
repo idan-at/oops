@@ -1,15 +1,19 @@
 export class Command {
-  #raw: string;
+  raw: string;
+  parts: string[];
+  stderr: string;
 
-  constructor(command: string) {
-    this.#raw = command;
+  constructor(command: string, stderr: string) {
+    this.raw = command;
+    this.parts = command.split(" ");
+    this.stderr = stderr;
   }
 
-  get raw() {
-    return this.#raw;
-  }
-
-  get parts() {
-    return this.#raw.split(" ");
+  toString() {
+    return JSON.stringify({
+      raw: this.raw,
+      parts: this.parts,
+      stdout: this.stderr,
+    });
   }
 }
