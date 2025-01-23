@@ -10,3 +10,7 @@ export async function getLastCommand() {
 
   return historyLines[historyLines.length - 3].split(";")[1];
 }
+
+
+
+
