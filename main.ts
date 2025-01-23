@@ -1,4 +1,4 @@
-import { getCommandOoutput, getLastCommand } from "./history.ts";
+import { getCommandOoutput, getLastCommand } from "./command_utils.ts";
 import { InputCommand } from "./commands/mod.ts";
 import * as rules from "./rules/mod.ts";
 import { getAICorrectedCommand } from "./ai/gemini.ts";
@@ -30,7 +30,7 @@ async function main() {
 
   logger.debug(`results: ${JSON.stringify(results)}`);
   if (results.length > 0) {
-    const { stdout } = await getCommandOoutput(results[0].raw)
+    const { stdout } = await getCommandOoutput(results[0].raw);
     console.log(stdout);
   } else {
     console.log("Skipped.");
