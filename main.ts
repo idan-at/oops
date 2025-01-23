@@ -2,9 +2,7 @@ import { getCommandOoutput, getLastCommand } from "./command_utils.ts";
 import { InputCommand } from "./commands/mod.ts";
 import * as rules from "./rules/mod.ts";
 import { getAICorrectedCommand } from "./ai/gemini.ts";
-import { Logger } from "jsr:@deno-library/logger";
-
-const logger = new Logger();
+import { logger } from "./logger.ts";
 
 async function main() {
   const lastCommand = await getLastCommand();
