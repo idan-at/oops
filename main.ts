@@ -1,6 +1,5 @@
 import { getLastCommand } from "./history.ts";
 import { GoogleGenerativeAI } from "npm:@google/generative-ai";
-import { GitNotCommandRule } from "./rules/git_not_command.ts";
 import { InputCommand } from "./commands/mod.ts";
 import * as rules from "./rules/mod.ts";
 import process from "node:process";
