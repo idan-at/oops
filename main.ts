@@ -1,32 +1,35 @@
-import { getLastCommand } from "./history.ts";
+import { getCommandStderr, getLastCommand } from "./history.ts";
 import { InputCommand } from "./commands/mod.ts";
 import * as rules from "./rules/mod.ts";
 import { getAICorrectedCommand } from "./ai/gemini.ts";
+import { Logger } from "jsr:@deno-library/logger";
+
+const logger = new Logger();
 
 async function main() {
   const lastCommand = await getLastCommand();
-  const [name, ...args2] = lastCommand.split(" ");
-  const c = new Deno.Command(name, {
-    args: args2,
-  });
-  const stderr = (await c.output()).stderr;
+  const stderr = await getCommandStderr(lastCommand);
+
   const input = new InputCommand(
     lastCommand,
-    new TextDecoder().decode(stderr),
+    stderr,
   );
+  logger.debug(`Last command: ${lastCommand}`);
+  logger.debug(`stderr: ${stderr}`);
 
-  console.log(`Last command: "${JSON.stringify(input)}"`);
   const results = [await getAICorrectedCommand(input)];
 
-  for (const rule of Object.values(rules)) {
-    if (rule.matches(input)) {
+  for (const [name, rule] of Object.entries(rules)) {
+    const matches = rule.matches(input);
+    logger.debug(`rule ${name} matches: ${matches}`);
+
+    if (matches) {
       results.push(...rule.fix(input));
     }
   }
 
+  logger.debug(`results: ${JSON.stringify(results)}`);
   if (results.length > 0) {
-    console.log("[idan debug]", results);
-
     const command = new Deno.Command(results[0].parts[0], {
       args: results[0].parts.slice(1),
     });
