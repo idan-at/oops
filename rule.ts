@@ -1,4 +1,4 @@
-import { FixedCommand, InputCommand } from "../commands/mod.ts";
+import { FixedCommand, InputCommand } from "./commands/mod.ts";
 
 export interface Rule {
   matches(command: InputCommand): boolean;

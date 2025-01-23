@@ -1,5 +1,5 @@
 import { FixedCommand, InputCommand } from "../commands/mod.ts";
-import { Rule } from "./rule.ts";
+import { Rule } from "../rule.ts";
 
 export class GitNotCommandRule implements Rule {
   matches(input: InputCommand): boolean {
