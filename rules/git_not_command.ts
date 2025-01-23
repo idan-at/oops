@@ -5,7 +5,7 @@ export function matches(input: InputCommand): boolean {
     input.stderr.includes("The most similar command");
 }
 
-export function fix(input: InputCommand): CorrectedCommand[] {
+export function correct(input: InputCommand): CorrectedCommand[] {
   const typo = input.stderr.match("git: '(.+)' is")![1];
 
   if (input.stderr.includes("The most similar command is")) {

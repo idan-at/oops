@@ -24,7 +24,7 @@ async function main() {
     logger.debug(`rule ${name} matches: ${matches}`);
 
     if (matches) {
-      results.push(...rule.fix(input));
+      results.push(...rule.correct(input));
     }
   }
 

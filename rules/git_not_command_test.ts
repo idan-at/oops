@@ -1,6 +1,6 @@
 import { expect } from "jsr:@std/expect";
 import { CorrectedCommand, InputCommand } from "../commands/mod.ts";
-import { fix, matches } from "./git_not_command.ts";
+import { correct, matches } from "./git_not_command.ts";
 
 Deno.test("matches - single suggestion", () => {
   const output = `\
@@ -38,7 +38,7 @@ git: 'lalalala' is not a git command. See 'git --help'.
   expect(matches(command)).toBeFalsy();
 });
 
-Deno.test("fix - single suggestion", () => {
+Deno.test("correct - single suggestion", () => {
   const output = `\
 git: 'stats' is not a git command. See 'git --help'.
 
@@ -48,12 +48,12 @@ The most similar command is
 `;
   const command = new InputCommand("git stats", output);
 
-  expect(fix(command)).toStrictEqual([
+  expect(correct(command)).toStrictEqual([
     new CorrectedCommand("git status"),
   ]);
 });
 
-Deno.test("fix - multiple suggestions", () => {
+Deno.test("correct - multiple suggestions", () => {
   const output = `\
 git: 'b' is not a git command. See 'git --help'.
 
@@ -64,7 +64,7 @@ The most similar commands are
 `;
   const command = new InputCommand("git b", output);
 
-  expect(fix(command)).toStrictEqual([
+  expect(correct(command)).toStrictEqual([
     new CorrectedCommand("git bisect"),
     new CorrectedCommand("git branch"),
   ]);
