@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno test --watch"
+    "dev": "deno test --watch --allow-run"
   },
   "imports": {
     "@google/generative-ai": "npm:@google/generative-ai@^0.21.0",
