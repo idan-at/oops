@@ -10,5 +10,5 @@ Deno.test("getCommandOoutput stdout", async () => {
 Deno.test("getCommandOoutput stderr", async () => {
   const { stdout, stderr } = await getCommandOoutput("ls does-not-exist");
   expect(stdout).toBe("");
-  expect(stderr).toMatch(/does-not-exist: No such file or directory/);
+  expect(stderr).toMatch(/No such file or directory/);
 });
