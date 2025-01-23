@@ -1,4 +1,4 @@
-import { getCommandStderr, getLastCommand } from "./history.ts";
+import { getCommandOoutput, getLastCommand } from "./history.ts";
 import { InputCommand } from "./commands/mod.ts";
 import * as rules from "./rules/mod.ts";
 import { getAICorrectedCommand } from "./ai/gemini.ts";
@@ -8,7 +8,7 @@ const logger = new Logger();
 
 async function main() {
   const lastCommand = await getLastCommand();
-  const stderr = await getCommandStderr(lastCommand);
+  const { stderr } = await getCommandOoutput(lastCommand);
 
   const input = new InputCommand(
     lastCommand,
@@ -30,11 +30,8 @@ async function main() {
 
   logger.debug(`results: ${JSON.stringify(results)}`);
   if (results.length > 0) {
-    const command = new Deno.Command(results[0].parts[0], {
-      args: results[0].parts.slice(1),
-    });
-    const stdout = (await command.output()).stdout;
-    console.log(new TextDecoder().decode(stdout));
+    const { stdout } = await getCommandOoutput(results[0].raw)
+    console.log(stdout);
   } else {
     console.log("Skipped.");
   }
