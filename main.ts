@@ -1,7 +1,7 @@
 import { getLastCommand } from "./history.ts";
 import { GoogleGenerativeAI } from "npm:@google/generative-ai";
 import { GitNotCommandRule } from "./rules/git_not_command.ts";
-import { Command } from "./command.ts";
+import { InputCommand } from "./commands/mod.ts";
 import process from "node:process";
 
 async function main() {
@@ -14,7 +14,10 @@ async function main() {
     args: args2,
   });
   const stderr = (await c.output()).stderr;
-  const command = new Command(lastCommand, new TextDecoder().decode(stderr));
+  const command = new InputCommand(
+    lastCommand,
+    new TextDecoder().decode(stderr),
+  );
 
   console.log(`Last command: "${command}"`);
 

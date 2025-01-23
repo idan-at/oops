@@ -1,11 +1,6 @@
-import { Command } from "../command.ts";
-
-export interface Fix {
-  command: string;
-  args: string[];
-}
+import { FixedCommand, InputCommand } from "../commands/mod.ts";
 
 export interface Rule {
-  matches(command: Command): boolean;
-  fix(command: Command): Fix;
+  matches(command: InputCommand): boolean;
+  fix(command: InputCommand): FixedCommand;
 }
