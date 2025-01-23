@@ -1,48 +1,34 @@
 import { getLastCommand } from "./history.ts";
-import { GoogleGenerativeAI } from "npm:@google/generative-ai";
 import { InputCommand } from "./commands/mod.ts";
 import * as rules from "./rules/mod.ts";
-import process from "node:process";
+import { getAICorrectedCommand } from "./ai/gemini.ts";
 
 async function main() {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
-
   const lastCommand = await getLastCommand();
   const [name, ...args2] = lastCommand.split(" ");
   const c = new Deno.Command(name, {
     args: args2,
   });
   const stderr = (await c.output()).stderr;
-  const command = new InputCommand(
+  const input = new InputCommand(
     lastCommand,
     new TextDecoder().decode(stderr),
   );
 
-  console.log(`Last command: "${JSON.stringify(command)}"`);
-
-  const response = await model.generateContent(
-    `I have a type in this command "${command.raw}".
-Can you please provide me with the most similar correct command you know? I want you to output a plain json with two fields:
-"command" for the first part of the command: probably a binary name, and certainly should not contain s apce, and "args" as an array of arguments. Do not include any other text in the response, including any markdown hints. The response should start with "{"`,
-  );
+  console.log(`Last command: "${JSON.stringify(input)}"`);
+  const results = [await getAICorrectedCommand(input)];
 
   for (const rule of Object.values(rules)) {
-    console.log(
-      "Rule: ",
-      rule.matches(command),
-      rule.fix(command),
-    );
+    if (rule.matches(input)) {
+      results.push(...rule.fix(input));
+    }
   }
 
-  console.log(response.response.text());
-  const x = JSON.parse(response.response.text());
-  const correctedCommand = x.command;
-  const args = x.args;
+  if (results.length > 0) {
+    console.log("[idan debug]", results);
 
-  if (correctedCommand) {
-    const command = new Deno.Command(correctedCommand, {
-      args,
+    const command = new Deno.Command(results[0].parts[0], {
+      args: results[0].parts.slice(1),
     });
     const stdout = (await command.output()).stdout;
     console.log(new TextDecoder().decode(stdout));
