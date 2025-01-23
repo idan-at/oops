@@ -1,4 +1,4 @@
-export class FixedCommand {
+export class CorrectedCommand {
   raw: string;
   parts: string[];
 

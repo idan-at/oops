@@ -1,1 +1,1 @@
-export { GitNotCommandRule } from "./git_not_command.ts";
+export * as gitNotFoundRule from "./git_not_command.ts";
