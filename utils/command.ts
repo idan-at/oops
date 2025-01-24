@@ -10,12 +10,12 @@ export async function getLastCommand(): Promise<string> {
   return historyLines[historyLines.length - 3].split(";")[1];
 }
 
-export async function getCommandOoutput(
+export async function getCommandOutput(
   command: string,
 ): Promise<{ stdout: string; stderr: string }> {
-  const [name, ...args2] = splitCommand(command);
+  const [name, ...rest] = splitCommand(command);
   const c = new Deno.Command(name, {
-    args: args2,
+    args: rest,
   });
   const { stdout, stderr } = await c.output();
 

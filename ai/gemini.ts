@@ -14,7 +14,6 @@ Can you please provide me with the most similar correct command you know? I want
 "command" for the first part of the command: probably a binary name, and certainly should not contain s apce, and "args" as an array of arguments. Do not include any other text in the response, including any markdown hints. The response should start with "{"`,
   );
 
-  console.log(response.response.text());
   const x = JSON.parse(response.response.text());
   const correctedCommand = x.command;
   const args = x.args;

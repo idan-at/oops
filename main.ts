@@ -1,4 +1,4 @@
-import { getCommandOoutput, getLastCommand } from "./utils/command.ts";
+import { getCommandOutput, getLastCommand } from "./utils/command.ts";
 import { InputCommand } from "./commands/mod.ts";
 import * as rules from "./rules/mod.ts";
 import { getAICorrectedCommand } from "./ai/gemini.ts";
@@ -27,6 +27,7 @@ function parseArguments() {
 
 async function main() {
   const args = parseArguments();
+  logger.debug("args:", args);
 
   if (args.help) {
     console.log("--ai for gemini based suggestions.");
@@ -34,19 +35,19 @@ async function main() {
   }
 
   const lastCommand = await getLastCommand();
-  const { stderr } = await getCommandOoutput(lastCommand);
+  const { stderr } = await getCommandOutput(lastCommand);
 
   const input = new InputCommand(
     lastCommand,
     stderr,
   );
-  logger.debug(`Last command: ${lastCommand}`);
-  logger.debug(`stderr: ${stderr}`);
+  logger.debug("last command:", lastCommand);
+  logger.debug("stderr:", stderr);
 
   const results = [];
   if (args.ai) {
     const result = await getAICorrectedCommand(input);
-    logger.debug(`ai based correction: ${JSON.stringify(result)}`);
+    logger.debug("ai based correction:", result);
     results.push(result);
   }
 
@@ -59,9 +60,9 @@ async function main() {
     }
   }
 
-  logger.debug(`results: ${JSON.stringify(results)}`);
+  logger.debug("results:", results);
   if (results.length > 0) {
-    const { stdout } = await getCommandOoutput(results[0].raw);
+    const { stdout } = await getCommandOutput(results[0].raw);
     console.log(stdout);
   } else {
     console.log("Skipped.");
