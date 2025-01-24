@@ -13,7 +13,9 @@
     "jsr:@std/path@^1.0.8": "1.0.8",
     "npm:@google/generative-ai@*": "0.21.0",
     "npm:@google/generative-ai@0.21": "0.21.0",
-    "npm:@types/node@*": "22.5.4"
+    "npm:@types/chance@1": "1.1.6",
+    "npm:@types/node@*": "22.5.4",
+    "npm:chance@^1.1.12": "1.1.12"
   },
   "jsr": {
     "@deno-library/logger@1.1.8": {
@@ -59,11 +61,17 @@
     "@google/generative-ai@0.21.0": {
       "integrity": "sha512-7XhUbtnlkSEZK15kN3t+tzIMxsbKm/dSkKBFalj+20NvPKe1kBY7mR2P7vuijEn+f06z5+A8bVGKO0v39cr6Wg=="
     },
+    "@types/chance@1.1.6": {
+      "integrity": "sha512-V+pm3stv1Mvz8fSKJJod6CglNGVqEQ6OyuqitoDkWywEODM/eJd1eSuIp9xt6DrX8BWZ2eDSIzbw1tPCUTvGbQ=="
+    },
     "@types/node@22.5.4": {
       "integrity": "sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==",
       "dependencies": [
         "undici-types"
       ]
+    },
+    "chance@1.1.12": {
+      "integrity": "sha512-vVBIGQVnwtUG+SYe0ge+3MvF78cvSpuCOEUJr7sVEk2vSBuMW6OXNJjSzdtzrlxNUEaoqH2GBd5Y/+18BEB01Q=="
     },
     "undici-types@6.19.8": {
       "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
@@ -102,7 +110,8 @@
     "dependencies": [
       "jsr:@std/assert@1",
       "jsr:@std/expect@^1.0.12",
-      "npm:@google/generative-ai@0.21"
+      "npm:@google/generative-ai@0.21",
+      "npm:chance@^1.1.12"
     ]
   }
 }

@@ -1,11 +1,10 @@
+import { getHistoryFilePath } from "./shell.ts";
+
 const decoder = new TextDecoder();
 
 export async function getLastCommand(): Promise<string> {
-  const history = Deno.env.get("HISTFILE") ||
-    `${Deno.env.get("HOME")}/.zsh_history`;
-
   const historyLines = decoder
-    .decode(await Deno.readFile(history))
+    .decode(await Deno.readFile(getHistoryFilePath()))
     .split("\n");
 
   return historyLines[historyLines.length - 3].split(";")[1];

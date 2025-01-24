@@ -1,4 +1,4 @@
-import { splitCommand } from "../command_utils.ts";
+import { splitCommand } from "../utils/command.ts";
 
 export class CorrectedCommand {
   raw: string;

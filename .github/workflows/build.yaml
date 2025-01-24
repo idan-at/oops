@@ -24,7 +24,7 @@ jobs:
           deno-version: v2.x
 
       - name: Run Tests
-        run: deno test --parallel --allow-run
+        run: deno test --parallel --allow-run --allow-env --allow-sys
 
   lint:
     runs-on: ubuntu-latest

@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { getCommandOoutput } from "./command_utils.ts";
+import { getCommandOoutput } from "./command.ts";
 
 Deno.test("getCommandOoutput stdout", async () => {
   const { stdout, stderr } = await getCommandOoutput("echo 1");

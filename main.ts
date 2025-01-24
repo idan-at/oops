@@ -1,4 +1,4 @@
-import { getCommandOoutput, getLastCommand } from "./command_utils.ts";
+import { getCommandOoutput, getLastCommand } from "./utils/command.ts";
 import { InputCommand } from "./commands/mod.ts";
 import * as rules from "./rules/mod.ts";
 import { getAICorrectedCommand } from "./ai/gemini.ts";
