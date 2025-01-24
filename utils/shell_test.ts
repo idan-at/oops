@@ -8,11 +8,46 @@ const chance = new Chance();
 Deno.test("getHistoryFilePath when HISTFILE is defined", () => {
   const expected = chance.string();
 
+  withHistFileEnvVarAs(expected, () => {
+    expect(getHistoryFilePath("")).toEqual(expected);
+  });
+});
+
+Deno.test("getHistoryFilePath bash", () => {
+  withHistFileEnvVarAs(null, () => {
+    expect(getHistoryFilePath("/bin/bash")).toEqual(
+      `${Deno.env.get("HOME")}/.bash_history`,
+    );
+  });
+});
+
+Deno.test("getHistoryFilePath zsh", () => {
+  withHistFileEnvVarAs(null, () => {
+    expect(getHistoryFilePath("/bin/zsh")).toEqual(
+      `${Deno.env.get("HOME")}/.zsh_history`,
+    );
+  });
+});
+
+Deno.test("getHistoryFilePath unsupported", () => {
+  withHistFileEnvVarAs(null, () => {
+    expect(() => getHistoryFilePath("/bin/unsupported")).toThrow(
+      /Unsupported shell/,
+    );
+  });
+});
+
+function withHistFileEnvVarAs(value: string | null, cb: () => void) {
   const before = Deno.env.get("HISTFILE");
-  Deno.env.set("HISTFILE", expected);
+
+  if (value === null) {
+    Deno.env.delete("HISTFILE");
+  } else {
+    Deno.env.set("HISTFILE", value);
+  }
 
   try {
-    expect(getHistoryFilePath()).toEqual(expected);
+    cb();
   } finally {
     if (before) {
       Deno.env.set("HISTFILE", before);
@@ -20,9 +55,4 @@ Deno.test("getHistoryFilePath when HISTFILE is defined", () => {
       Deno.env.delete("HISTFILE");
     }
   }
-});
-
-// TODO: support machines where HISTFILE is defined.
-Deno.test("getHistoryFilePath zsh", () => {
-  expect(getHistoryFilePath()).toEqual(`${Deno.env.get("HOME")}/.zsh_history`);
-});
+}

@@ -1,14 +1,15 @@
-import { userInfo } from "node:os";
-
-export function getHistoryFilePath(): string {
+export function getHistoryFilePath(shell: string): string {
   const fromEnv = Deno.env.get("HISTFILE");
 
-  return fromEnv || specificShellHistoryFile();
+  return fromEnv || specificShellHistoryFile(shell);
 }
 
-function specificShellHistoryFile() {
-  // TODO: act by this
-  userInfo().shell;
+function specificShellHistoryFile(shell: string) {
+  if (shell == "/bin/bash") {
+    return `${Deno.env.get("HOME")}/.bash_history`;
+  } else if (shell == "/bin/zsh") {
+    return `${Deno.env.get("HOME")}/.zsh_history`;
+  }
 
-  return `${Deno.env.get("HOME")}/.zsh_history`;
+  throw new Error(`Unsupported shell ${shell}`);
 }

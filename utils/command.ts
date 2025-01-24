@@ -1,10 +1,15 @@
 import { getHistoryFilePath } from "./shell.ts";
+import { userInfo } from "node:os";
 
 const decoder = new TextDecoder();
 
+const DEFAULT_SHELL = "/bin/bash";
+
 export async function getLastCommand(): Promise<string> {
+  const shell = userInfo().shell || DEFAULT_SHELL;
+
   const historyLines = decoder
-    .decode(await Deno.readFile(getHistoryFilePath()))
+    .decode(await Deno.readFile(getHistoryFilePath(shell)))
     .split("\n");
 
   return historyLines[historyLines.length - 3].split(";")[1];
