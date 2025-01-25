@@ -1,5 +1,6 @@
 import { expect } from "expect";
-import { before, describe, test } from "node:test";
+import { test } from "node:test";
+import { before, describe } from "jsr:@std/testing/bdd";
 
 const decoder = new TextDecoder();
 
