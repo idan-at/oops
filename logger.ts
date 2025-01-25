@@ -1,7 +1,8 @@
 import { Logger } from "jsr:@deno-library/logger";
+import process from "node:process";
 
 export const logger = new Logger();
 
-if (Deno.env.get("OOPS_DEBUG") == null) {
+if (process.env.OOPS_DEBUG === undefined) {
   logger.disable("debug");
 }

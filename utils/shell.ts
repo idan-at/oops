@@ -1,14 +1,17 @@
+import process from "node:process"
+import os from "node:os"
+
 export function getHistoryFilePath(shell: string): string {
-  const fromEnv = Deno.env.get("HISTFILE");
+  const fromEnv = process.env.HISTFILE;
 
   return fromEnv || specificShellHistoryFile(shell);
 }
 
 function specificShellHistoryFile(shell: string) {
   if (shell == "/bin/bash") {
-    return `${Deno.env.get("HOME")}/.bash_history`;
+    return `${os.homedir()}/.bash_history`;
   } else if (shell == "/bin/zsh") {
-    return `${Deno.env.get("HOME")}/.zsh_history`;
+    return `${os.homedir()}/.zsh_history`;
   }
 
   throw new Error(`Unsupported shell ${shell}`);
