@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno test --watch --allow-run --allow-env --allow-sys"
+    "dev": "deno test --watch --allow-run --allow-env --allow-sys --allow-read"
   },
   "imports": {
     "@google/generative-ai": "npm:@google/generative-ai@^0.21.0",
