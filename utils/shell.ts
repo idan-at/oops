@@ -1,5 +1,5 @@
-import process from "node:process"
-import os from "node:os"
+import process from "node:process";
+import os from "node:os";
 
 export function getHistoryFilePath(shell: string): string {
   const fromEnv = process.env.HISTFILE;
