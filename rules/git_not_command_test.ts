@@ -1,8 +1,9 @@
-import { expect } from "jsr:@std/expect";
+import { expect } from "expect";
+import { test } from "node:test";
 import { CorrectedCommand, InputCommand } from "../commands/mod.ts";
 import { correct, matches } from "./git_not_command.ts";
 
-Deno.test("matches - single suggestion", () => {
+test("matches - single suggestion", () => {
   const output = `\
 git: 'stats' is not a git command. See 'git --help'.
 
@@ -15,7 +16,7 @@ The most similar command is
   expect(matches(command)).toBeTruthy();
 });
 
-Deno.test("matches - multiple suggestions", () => {
+test("matches - multiple suggestions", () => {
   const output = `\
 git: 'b' is not a git command. See 'git --help'.
 
@@ -29,7 +30,7 @@ The most similar commands are
   expect(matches(command)).toBeTruthy();
 });
 
-Deno.test("no match - missing suggestion", () => {
+test("no match - missing suggestion", () => {
   const output = `\
 git: 'lalalala' is not a git command. See 'git --help'.
 `;
@@ -38,7 +39,7 @@ git: 'lalalala' is not a git command. See 'git --help'.
   expect(matches(command)).toBeFalsy();
 });
 
-Deno.test("correct - single suggestion", () => {
+test("correct - single suggestion", () => {
   const output = `\
 git: 'stats' is not a git command. See 'git --help'.
 
@@ -53,7 +54,7 @@ The most similar command is
   ]);
 });
 
-Deno.test("correct - multiple suggestions", () => {
+test("correct - multiple suggestions", () => {
   const output = `\
 git: 'b' is not a git command. See 'git --help'.
 

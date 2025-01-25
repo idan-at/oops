@@ -1,12 +1,14 @@
-import { expect } from "jsr:@std/expect";
+import { expect } from "expect";
+import { test } from "node:test";
 // @deno-types="npm:@types/chance@1"
 import { Chance } from "chance";
 import os from "node:os";
+import process from "node:process";
 import { getHistoryFilePath } from "./shell.ts";
 
 const chance = new Chance();
 
-Deno.test("getHistoryFilePath when HISTFILE is defined", () => {
+test("getHistoryFilePath when HISTFILE is defined", () => {
   const expected = chance.string();
 
   withHistFileEnvVarAs(expected, () => {
@@ -14,7 +16,7 @@ Deno.test("getHistoryFilePath when HISTFILE is defined", () => {
   });
 });
 
-Deno.test("getHistoryFilePath bash", () => {
+test("getHistoryFilePath bash", () => {
   withHistFileEnvVarAs(null, () => {
     expect(getHistoryFilePath("/bin/bash")).toEqual(
       `${os.homedir()}/.bash_history`,
@@ -22,7 +24,7 @@ Deno.test("getHistoryFilePath bash", () => {
   });
 });
 
-Deno.test("getHistoryFilePath zsh", () => {
+test("getHistoryFilePath zsh", () => {
   withHistFileEnvVarAs(null, () => {
     expect(getHistoryFilePath("/bin/zsh")).toEqual(
       `${os.homedir()}/.zsh_history`,
@@ -30,7 +32,7 @@ Deno.test("getHistoryFilePath zsh", () => {
   });
 });
 
-Deno.test("getHistoryFilePath unsupported", () => {
+test("getHistoryFilePath unsupported", () => {
   withHistFileEnvVarAs(null, () => {
     expect(() => getHistoryFilePath("/bin/unsupported")).toThrow(
       /Unsupported shell/,
@@ -39,21 +41,21 @@ Deno.test("getHistoryFilePath unsupported", () => {
 });
 
 function withHistFileEnvVarAs(value: string | null, cb: () => void) {
-  const before = Deno.env.get("HISTFILE");
+  const before = process.env.HISTFILE;
 
   if (value === null) {
-    Deno.env.delete("HISTFILE");
+    delete process.env.HISTFILE;
   } else {
-    Deno.env.set("HISTFILE", value);
+    process.env.HISTFILE = value;
   }
 
   try {
     cb();
   } finally {
     if (before) {
-      Deno.env.set("HISTFILE", before);
+      process.env.HISTFILE = before;
     } else {
-      Deno.env.delete("HISTFILE");
+      delete process.env.HISTFILE;
     }
   }
 }
