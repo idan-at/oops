@@ -1,8 +1,13 @@
-import { Logger } from "jsr:@deno-library/logger";
+import winston from "winston";
 import process from "node:process";
 
-export const logger = new Logger();
-
-if (process.env.OOPS_DEBUG === undefined) {
-  logger.disable("debug");
-}
+export const logger = winston.createLogger({
+  level: process.env.OOPS_DEBUG === undefined ? "info" : "debug",
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.cli(),
+  ),
+  transports: [
+    new winston.transports.Console(),
+  ],
+});

@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from "npm:@google/generative-ai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import process from "node:process";
 import { CorrectedCommand, InputCommand } from "../commands/mod.ts";
 
