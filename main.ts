@@ -3,72 +3,56 @@ import { InputCommand } from "./commands/mod.ts";
 import * as rules from "./rules/mod.ts";
 import { getAICorrectedCommand } from "./ai/gemini.ts";
 import { logger } from "./logger.ts";
-import { parseArgs } from "jsr:@std/cli";
+import process from "node:process";
+import { program } from "commander";
 
-function parseArguments() {
-  return parseArgs(Deno.args, {
-    alias: {
-      "help": "h",
-      "version": "v",
-    },
-    boolean: [
-      "help",
-      "ai",
-    ],
-    string: [
-      "version",
-    ],
-    default: {
-      ai: false,
-      help: false,
-    },
-  });
-}
+function main() {
+  program
+    .name("oops")
+    .description("Correct your previous command")
+    .version("0.1.0")
+    .option("--ai", "correct with ai", false)
+    .action(async (args) => {
+      logger.debug("args", args);
 
-async function main() {
-  const args = parseArguments();
-  logger.debug("args:", args);
+      const lastCommand = await getLastCommand();
+      const { stderr } = await getCommandOutput(lastCommand);
 
-  if (args.help) {
-    console.log("--ai for gemini based suggestions.");
-    Deno.exit(0);
-  }
+      const input = new InputCommand(
+        lastCommand,
+        stderr,
+      );
+      logger.debug("last command:", lastCommand);
+      logger.debug("stderr:", stderr);
 
-  const lastCommand = await getLastCommand();
-  const { stderr } = await getCommandOutput(lastCommand);
+      const results = [];
+      if (args.ai) {
+        const result = await getAICorrectedCommand(input);
+        logger.debug("ai based correction:", result);
+        results.push(result);
+      }
 
-  const input = new InputCommand(
-    lastCommand,
-    stderr,
-  );
-  logger.debug("last command:", lastCommand);
-  logger.debug("stderr:", stderr);
+      for (const [name, rule] of Object.entries(rules)) {
+        const matches = rule.matches(input);
+        logger.debug(`rule ${name} matches: ${matches}`);
 
-  const results = [];
-  if (args.ai) {
-    const result = await getAICorrectedCommand(input);
-    logger.debug("ai based correction:", result);
-    results.push(result);
-  }
+        if (matches) {
+          results.push(...rule.correct(input));
+        }
+      }
 
-  for (const [name, rule] of Object.entries(rules)) {
-    const matches = rule.matches(input);
-    logger.debug(`rule ${name} matches: ${matches}`);
+      logger.debug("results:", results);
+      if (results.length > 0) {
+        const { stdout } = await getCommandOutput(results[0].raw);
+        console.log(stdout);
+      } else {
+        console.log("Skipped.");
+      }
+    });
 
-    if (matches) {
-      results.push(...rule.correct(input));
-    }
-  }
-
-  logger.debug("results:", results);
-  if (results.length > 0) {
-    const { stdout } = await getCommandOutput(results[0].raw);
-    console.log(stdout);
-  } else {
-    console.log("Skipped.");
-  }
+  program.parse(process.argv);
 }
 
 if (import.meta.main) {
-  await main();
+  main();
 }

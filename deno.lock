@@ -15,7 +15,9 @@
     "npm:@google/generative-ai@0.21": "0.21.0",
     "npm:@types/chance@1": "1.1.6",
     "npm:@types/node@*": "22.5.4",
-    "npm:chance@^1.1.12": "1.1.12"
+    "npm:chance@^1.1.12": "1.1.12",
+    "npm:commander@*": "13.1.0",
+    "npm:commander@^13.1.0": "13.1.0"
   },
   "jsr": {
     "@deno-library/logger@1.1.8": {
@@ -73,6 +75,9 @@
     "chance@1.1.12": {
       "integrity": "sha512-vVBIGQVnwtUG+SYe0ge+3MvF78cvSpuCOEUJr7sVEk2vSBuMW6OXNJjSzdtzrlxNUEaoqH2GBd5Y/+18BEB01Q=="
     },
+    "commander@13.1.0": {
+      "integrity": "sha512-/rFeCpNJQbhSZjGVwO9RFV3xPqbnERS8MmIQzCtD/zl6gpJuV/bMLuN92oG3F7d8oDEHHRrujSXNUr8fpjntKw=="
+    },
     "undici-types@6.19.8": {
       "integrity": "sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw=="
     }
@@ -111,7 +116,8 @@
       "jsr:@std/assert@1",
       "jsr:@std/expect@^1.0.12",
       "npm:@google/generative-ai@0.21",
-      "npm:chance@^1.1.12"
+      "npm:chance@^1.1.12",
+      "npm:commander@^13.1.0"
     ]
   }
 }

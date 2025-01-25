@@ -6,6 +6,7 @@
     "@google/generative-ai": "npm:@google/generative-ai@^0.21.0",
     "@std/assert": "jsr:@std/assert@1",
     "@std/expect": "jsr:@std/expect@^1.0.12",
-    "chance": "npm:chance@^1.1.12"
+    "chance": "npm:chance@^1.1.12",
+    "commander": "npm:commander@^13.1.0"
   }
 }

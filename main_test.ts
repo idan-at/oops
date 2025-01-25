@@ -20,7 +20,7 @@ Deno.test("help menu", async () => {
   }).output();
 
   expect(success).toBeTruthy();
-  expect(decoder.decode(stdout)).toEqual(
-    "--ai for gemini based suggestions.\n",
+  expect(decoder.decode(stdout)).toContain(
+    "Correct your previous command",
   );
 });
