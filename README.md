@@ -4,4 +4,6 @@ A `thefuck` alternative written in Typescript with Deno.
 
 ## Compile
 
-`deno compile --allow-env --allow-read --allow-run --allow-net --allow-sys main.ts`
+- Deno:
+  `deno compile --allow-env --allow-read --allow-run --allow-net --allow-sys main.ts`
+- Bun: `bun build main.ts --compile`
