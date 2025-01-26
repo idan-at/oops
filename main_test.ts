@@ -1,4 +1,6 @@
-import { expect } from "jsr:@std/expect";
+import { expect } from "expect";
+import { test } from "node:test";
+import { describe } from "jsr:@std/testing/bdd";
 
 const decoder = new TextDecoder();
 
@@ -14,13 +16,15 @@ await new Deno.Command("deno", {
   ],
 }).spawn().status;
 
-Deno.test("help menu", async () => {
-  const { stdout, success } = await new Deno.Command("./oops", {
-    args: ["--help"],
-  }).output();
+describe("integratoin tests", () => {
+  test("help menu", async () => {
+    const { stdout, success } = await new Deno.Command("./oops", {
+      args: ["--help"],
+    }).output();
 
-  expect(success).toBeTruthy();
-  expect(decoder.decode(stdout)).toContain(
-    "Correct your previous command",
-  );
+    expect(success).toBeTruthy();
+    expect(decoder.decode(stdout)).toContain(
+      "Correct your previous command",
+    );
+  });
 });
