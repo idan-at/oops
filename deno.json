@@ -1,12 +1,11 @@
 {
-  "tasks": {
-    "dev": "deno test --watch --allow-run --allow-env --allow-sys --allow-read"
-  },
   "imports": {
     "@google/generative-ai": "npm:@google/generative-ai@^0.21.0",
     "@std/assert": "jsr:@std/assert@1",
     "@std/expect": "jsr:@std/expect@^1.0.12",
+    "@types/chance": "npm:@types/chance@^1.1.6",
     "chance": "npm:chance@^1.1.12",
+    "colors": "npm:colors@^1.4.0",
     "commander": "npm:commander@^13.1.0",
     "winston": "npm:winston@^3.17.0"
   }
