@@ -1,6 +1,7 @@
 import readline, { Key } from "node:readline";
 import process from "node:process";
 import { exec } from "node:child_process";
+import colors from "colors";
 
 export function suggest(commands: string[]): void {
   const rl = readline.createInterface({
@@ -19,17 +20,18 @@ export function suggest(commands: string[]): void {
     linesWritten = 0;
 
     commands.forEach((command, index) => {
-      const indicator = index === currentCommandIndex ? "> " : "  ";
+      const indicator = index === currentCommandIndex
+        ? colors.green("> ")
+        : "  ";
       process.stdout.write(`${indicator}${command}\n`);
       linesWritten++;
     });
 
-    if (!commandExecuted) {
-      process.stdout.write(
-        "\nPress ENTER/y to run selected, CTRL+C/n to skip, j/k or arrows to navigate.\n",
-      );
-      linesWritten++;
-    }
+    const instructions = colors.yellow(
+      "Press ENTER to run selected, CTRL+C to skip, arrows to navigate.",
+    );
+    process.stdout.write(`\n${instructions}\n`);
+    linesWritten++;
   }
 
   displayCommands();
@@ -37,55 +39,46 @@ export function suggest(commands: string[]): void {
   rl.on("line", (input: string) => {
     input = input.trim().toLowerCase();
 
-    if ((input === "" || input === "y") && !commandExecuted) {
+    if (input === "" && !commandExecuted) {
       commandExecuted = true;
       const commandToRun = commands[currentCommandIndex];
-      console.log(`Executing: ${commandToRun}`);
+      console.log(colors.cyan(commandToRun));
 
       exec(commandToRun, (error, stdout, stderr) => {
         if (error) {
-          console.error(`Error executing command: ${error}`);
+          console.error(colors.red(`Error executing command: ${error}`));
           if (stderr) {
-            console.error(`Stderr: ${stderr}`);
+            console.error(colors.red(`Stderr: ${stderr}`));
           }
         } else {
-          console.log(`Stdout: ${stdout}`);
+          console.log(stdout);
         }
         rl.close();
       });
-    } else if (input === "n" && !commandExecuted) {
-      console.log("Skipping command.");
-      currentCommandIndex++;
-      if (currentCommandIndex >= commands.length) {
-        console.log("No more commands.");
-        rl.close();
-        return;
-      }
-      displayCommands();
     }
   });
 
   process.stdin.setRawMode(true);
-  process.stdin.on("keypress", (_str: string, key: Key) => { // Key type is now Key
+  process.stdin.on("keypress", (_str: string, key: Key) => {
     if (!commandExecuted) {
-      if (key.name === "up" || key.name === "k") {
+      if (key.name === "up") {
         currentCommandIndex = Math.max(0, currentCommandIndex - 1);
         displayCommands();
-      } else if (key.name === "down" || key.name === "j") {
+      } else if (key.name === "down") {
         currentCommandIndex = Math.min(
           commands.length - 1,
           currentCommandIndex + 1,
         );
         displayCommands();
       } else if (key.ctrl && key.name === "c") {
-        console.log("Exiting.");
+        console.log(colors.red("Aborted."));
         rl.close();
       }
     }
   });
 
   rl.on("SIGINT", () => {
-    console.log("Exiting.");
+    console.log(colors.red("Aborted."));
     rl.close();
   });
 
