@@ -17,13 +17,15 @@ function main() {
       logger.debug("args", args);
 
       const lastCommand = await getLastCommand();
+      logger.debug("last command", { lastCommand });
+
       const { stderr } = await getCommandOutput(lastCommand);
+      logger.debug("stderr", { stderr });
 
       const input = new InputCommand(
         lastCommand,
         stderr,
       );
-      logger.debug("last command:", { lastCommand, stderr });
 
       const results = [];
       if (args.ai) {

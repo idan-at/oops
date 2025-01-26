@@ -23,7 +23,8 @@ export async function getLastCommand(): Promise<string> {
 export async function getCommandOutput(
   command: string,
 ): Promise<{ stdout: string; stderr: string }> {
-  const { stdout, stderr } = await execPromise(command).catch((x) => x);
+  const { stdout, stderr } = await execPromise(command, { timeout: 5000 })
+    .catch((x) => x);
 
   return {
     stdout,
