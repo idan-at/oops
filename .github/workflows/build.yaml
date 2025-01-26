@@ -27,7 +27,7 @@ jobs:
         run: deno install
 
       - name: Run Tests
-        run: deno test --parallel --allow-run --allow-env --allow-sys --allow-read
+        run: deno test --parallel --allow-all
 
   lint:
     runs-on: ubuntu-latest

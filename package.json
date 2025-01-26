@@ -1,11 +1,16 @@
 {
+  "scripts": {
+    "dev": "deno test --watch --allow-all"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "colors": "^1.4.0",
     "commander": "^13.1.0",
+    "types": "^0.1.1",
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@types/chance": "^1.1.6",
     "expect": "^29.7.0"
   }
 }

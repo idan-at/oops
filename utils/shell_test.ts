@@ -1,6 +1,6 @@
 import { expect } from "expect";
 import { test } from "node:test";
-// @deno-types="npm:@types/chance@1"
+// @ts-types="npm:@types/chance"
 import { Chance } from "chance";
 import os from "node:os";
 import process from "node:process";
