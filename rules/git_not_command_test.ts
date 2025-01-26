@@ -1,6 +1,6 @@
 import { expect } from "expect";
 import { test } from "node:test";
-import { CorrectedCommand, InputCommand } from "../commands/mod.ts";
+import { InputCommand } from "../input_command.ts";
 import { correct, matches } from "./git_not_command.ts";
 
 test("matches - single suggestion", () => {
@@ -50,7 +50,7 @@ The most similar command is
   const command = new InputCommand("git stats", output);
 
   expect(correct(command)).toStrictEqual([
-    new CorrectedCommand("git status"),
+    "git status",
   ]);
 });
 
@@ -66,7 +66,7 @@ The most similar commands are
   const command = new InputCommand("git b", output);
 
   expect(correct(command)).toStrictEqual([
-    new CorrectedCommand("git bisect"),
-    new CorrectedCommand("git branch"),
+    "git bisect",
+    "git branch",
   ]);
 });

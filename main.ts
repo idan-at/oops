@@ -1,8 +1,9 @@
 import { getCommandOutput, getLastCommand } from "./utils/command.ts";
-import { InputCommand } from "./commands/mod.ts";
+import { InputCommand } from "./input_command.ts";
 import * as rules from "./rules/mod.ts";
 import { getAICorrectedCommand } from "./ai/gemini.ts";
 import { logger } from "./logger.ts";
+import { suggest } from "./suggest.ts";
 import process from "node:process";
 import { program } from "commander";
 
@@ -42,8 +43,7 @@ function main() {
 
       logger.debug("results:", results);
       if (results.length > 0) {
-        const { stdout } = await getCommandOutput(results[0].raw);
-        console.log(stdout);
+        suggest(results);
       } else {
         console.log("Skipped.");
       }
