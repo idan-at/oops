@@ -2,7 +2,9 @@
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "commander": "^13.1.0",
-    "expect": "^29.7.0",
     "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "expect": "^29.7.0"
   }
 }

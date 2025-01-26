@@ -2,33 +2,42 @@ import readline, { Key } from "node:readline";
 import process from "node:process";
 import { exec } from "node:child_process";
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
+export function suggest(commands: string[]): void {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
 
-export function suggest(commands: string[]) {
-  let commandExecuted = false;
   let currentCommandIndex = 0;
+  let commandExecuted = false;
+  let linesWritten = 0;
 
   function displayCommands() {
+    readline.moveCursor(process.stdout, 0, -linesWritten - 1);
+    readline.clearScreenDown(process.stdout);
+
+    linesWritten = 0;
+
     commands.forEach((command, index) => {
       const indicator = index === currentCommandIndex ? "> " : "  ";
-      console.log(`${indicator}${command}`);
+      process.stdout.write(`${indicator}${command}\n`);
+      linesWritten++;
     });
+
     if (!commandExecuted) {
-      console.log(
-        "\nPress ENTER/y to run selected, CTRL+C/n to skip, j/k or arrows to navigate.",
+      process.stdout.write(
+        "\nPress ENTER/y to run selected, CTRL+C/n to skip, j/k or arrows to navigate.\n",
       );
+      linesWritten++;
     }
   }
 
   displayCommands();
 
-  rl.on("line", (input) => {
+  rl.on("line", (input: string) => {
     input = input.trim().toLowerCase();
 
-    if (input === "" || input === "y" && !commandExecuted) {
+    if ((input === "" || input === "y") && !commandExecuted) {
       commandExecuted = true;
       const commandToRun = commands[currentCommandIndex];
       console.log(`Executing: ${commandToRun}`);
@@ -57,7 +66,7 @@ export function suggest(commands: string[]) {
   });
 
   process.stdin.setRawMode(true);
-  process.stdin.on("keypress", (_str: string, key: Key) => {
+  process.stdin.on("keypress", (_str: string, key: Key) => { // Key type is now Key
     if (!commandExecuted) {
       if (key.name === "up" || key.name === "k") {
         currentCommandIndex = Math.max(0, currentCommandIndex - 1);
@@ -81,7 +90,6 @@ export function suggest(commands: string[]) {
   });
 
   rl.on("close", () => {
-    process.stdin.setRawMode(false);
     process.exit(0);
   });
 }
