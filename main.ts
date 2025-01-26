@@ -45,7 +45,7 @@ function main() {
       if (results.length > 0) {
         suggest(results);
       } else {
-        console.log("Skipped.");
+        console.log("No Corrections Found.");
       }
     });
 
