@@ -4,7 +4,7 @@ import { InputCommand } from "../input_command.ts";
 
 export async function getAICorrectedCommand(
   input: InputCommand,
-): Promise<string> {
+): Promise<string[]> {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
