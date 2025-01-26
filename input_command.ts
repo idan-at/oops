@@ -1,4 +1,4 @@
-import { splitCommand } from "../utils/command.ts";
+import { splitCommand } from "./utils/command.ts";
 export class InputCommand {
   raw: string;
   parts: string[];

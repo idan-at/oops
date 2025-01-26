@@ -1,10 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import process from "node:process";
-import { CorrectedCommand, InputCommand } from "../commands/mod.ts";
+import { InputCommand } from "../input_command.ts";
 
 export async function getAICorrectedCommand(
   input: InputCommand,
-): Promise<CorrectedCommand> {
+): Promise<string> {
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
@@ -18,5 +18,5 @@ Can you please provide me with the most similar correct command you know? I want
   const correctedCommand = x.command;
   const args = x.args;
 
-  return new CorrectedCommand(`${correctedCommand} ${args.join(" ")}`);
+  return `${correctedCommand} ${args.join(" ")}`;
 }
