@@ -12,7 +12,6 @@ export function suggest(commands: string[]) {
   let currentCommandIndex = 0;
 
   function displayCommands() {
-    console.clear();
     commands.forEach((command, index) => {
       const indicator = index === currentCommandIndex ? "> " : "  ";
       console.log(`${indicator}${command}`);

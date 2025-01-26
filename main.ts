@@ -27,9 +27,9 @@ function main() {
 
       const results = [];
       if (args.ai) {
-        const result = await getAICorrectedCommand(input);
-        logger.debug("ai based correction:", result);
-        results.push(result);
+        const aiSgguestions = await getAICorrectedCommand(input);
+        logger.debug("ai based correction:", aiSgguestions);
+        results.push(...aiSgguestions);
       }
 
       for (const [name, rule] of Object.entries(rules)) {
