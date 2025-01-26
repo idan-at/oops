@@ -11,4 +11,4 @@ A `thefuck` alternative written in Typescript with Deno.
 ## TODO:
 
 - Drop deno specific code from main_test
-- Test compilation in main_test
+- Test compilation of deno&bun in main_test
