@@ -11,7 +11,7 @@ const DEFAULT_SHELL = "/bin/bash";
 
 export async function getLastCommand(): Promise<string> {
   const shell = userInfo().shell || DEFAULT_SHELL;
-  logger.info("shell:", shell);
+  logger.info("shell:", { shell });
 
   const historyLines =
     (await readFile(getHistoryFilePath(shell), { encoding: "utf-8" }))

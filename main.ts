@@ -22,8 +22,7 @@ function main() {
         lastCommand,
         stderr,
       );
-      logger.debug("last command:", lastCommand);
-      logger.debug("stderr:", stderr);
+      logger.debug("last command:", { lastCommand, stderr });
 
       const results = [];
       if (args.ai) {
