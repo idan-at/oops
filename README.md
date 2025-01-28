@@ -15,3 +15,4 @@ A `thefuck` alternative written in Typescript with Deno.
 - move cli to a new cli.ts file
 - direct cli tests
 - multiple ai services support (--ai gemini/model for example)
+- history based suggestions
